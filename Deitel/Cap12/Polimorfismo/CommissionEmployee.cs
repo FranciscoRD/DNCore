@@ -1,0 +1,63 @@
+using System;
+
+namespace Cap12.Polimorfismo
+{
+    public class CommissionEmployee : Object
+    {
+        public string FirstName { get; }
+        public string LastName { get; }
+        public string  SocialSecurityNumber { get; }
+        private decimal grossSales;
+        private decimal commissionRate;
+
+        public CommissionEmployee(string firstName, string lastName,
+            string socialSecurityNumber, decimal grossSales,
+            decimal commissionRate)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            SocialSecurityNumber = socialSecurityNumber;
+            GrossSales = grossSales;
+            CommissionRate = commissionRate;
+        }
+        public decimal GrossSales
+        {
+            get
+            {
+                return grossSales;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value),
+                        value,$"{nameof(GrossSales)} must be >= 0");
+                }
+                grossSales = value;
+            }
+        }
+        public decimal CommissionRate
+        {
+            get
+            {
+                return commissionRate;
+            }
+            set
+            {
+                if (value <= 0 || value >= 1)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value),
+                        value,$"{nameof(CommissionRate)} must be > 0 and < 1");
+                }
+                commissionRate = value;
+            }
+        }
+        public virtual decimal Earnings() => CommissionRate * GrossSales;
+
+        public override string ToString() => 
+            $"commission employee: {FirstName} {LastName}\n" + 
+            $"social security number: {SocialSecurityNumber}\n" +
+            $"gross sales: {GrossSales:C}\n" +
+            $"commission rate: {CommissionRate:F2}";
+    }
+}
